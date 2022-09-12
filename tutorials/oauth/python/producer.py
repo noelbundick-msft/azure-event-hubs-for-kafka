@@ -16,7 +16,7 @@ load_dotenv()
 
 FULLY_QUALIFIED_NAMESPACE= os.environ['EVENT_HUB_HOSTNAME']
 EVENTHUB_NAME = os.environ['EVENT_HUB_NAME']
-AUTH_SCOPE= "https://" + FULLY_QUALIFIED_NAMESPACE +"/.default"
+AUTH_SCOPE = f"https://{FULLY_QUALIFIED_NAMESPACE}/.default"
 
 # AAD
 cred = DefaultAzureCredential()
@@ -31,7 +31,7 @@ def _get_token(config):
 
 
 producer = Producer({
-    "bootstrap.servers": FULLY_QUALIFIED_NAMESPACE + ":9093",
+    "bootstrap.servers": f"{FULLY_QUALIFIED_NAMESPACE}:9093",
     "sasl.mechanism": "OAUTHBEARER",
     "security.protocol": "SASL_SSL",
     "oauth_cb": _get_token,

@@ -19,7 +19,7 @@ load_dotenv()
 FULLY_QUALIFIED_NAMESPACE= os.environ['EVENT_HUB_HOSTNAME']
 EVENTHUB_NAME = os.environ['EVENT_HUB_NAME']
 CONSUMER_GROUP='$Default'
-AUTH_SCOPE= "https://" + FULLY_QUALIFIED_NAMESPACE +"/.default"
+AUTH_SCOPE = f"https://{FULLY_QUALIFIED_NAMESPACE}/.default"
 
 # AAD
 cred = DefaultAzureCredential()
@@ -35,7 +35,7 @@ def _get_token(config):
 
 
 consumer = Consumer({
-    "bootstrap.servers": FULLY_QUALIFIED_NAMESPACE + ":9093",
+    "bootstrap.servers": f"{FULLY_QUALIFIED_NAMESPACE}:9093",
     "sasl.mechanism": "OAUTHBEARER",
     "security.protocol": "SASL_SSL",
     "oauth_cb": _get_token,
@@ -52,7 +52,7 @@ def signal_handler(sig, frame):
 
 signal.signal(signal.SIGINT, signal_handler)
 
-print("consuming " + EVENTHUB_NAME)
+print(f"consuming {EVENTHUB_NAME}")
 consumer.subscribe([EVENTHUB_NAME])
 
 while True:
