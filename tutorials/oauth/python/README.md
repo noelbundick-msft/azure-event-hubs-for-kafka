@@ -24,11 +24,11 @@ An Event Hubs namespace is required to send or receive from any Event Hubs servi
 
 ## Getting ready
 
-Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs for Kafka repository and navigate to the `quickstart/python` subfolder:
+Now that you have a Kafka-enabled Event Hubs connection string, clone the Azure Event Hubs for Kafka repository and navigate to the `tutorials/oauth/python` subfolder:
 
 ```bash
 git clone https://github.com/Azure/azure-event-hubs-for-kafka.git
-cd azure-event-hubs-for-kafka/quickstart/python
+cd azure-event-hubs-for-kafka/tutorials/oauth/python
 ```
 
 Now run the set up script:
