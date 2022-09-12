@@ -9,7 +9,6 @@
 
 import signal
 import sys
-import time
 from confluent_kafka import Consumer
 from azure.identity import DefaultAzureCredential
 from dotenv import load_dotenv
@@ -32,7 +31,7 @@ def _get_token(config):
     configure how you can get the token (e.g. which token URL to use)
     """
     access_token = cred.get_token(AUTH_SCOPE)
-    return access_token.token, time.time() + access_token.expires_on
+    return access_token.token, access_token.expires_on
 
 
 consumer = Consumer({
