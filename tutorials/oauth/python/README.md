@@ -88,7 +88,7 @@ python consumer.py
 
 Event Hubs integrates with Azure Active Directory (Azure AD), which provides an OAuth 2.0 compliant authorization server. Azure role-based access control (Azure RBAC) can be used to grant permissions to Kafka client identities. 
 
-To grant access to an Event Hub resource, first the security principal must be authenicated and an OAuth 2.0 token is returned. The token is then passed as part of the request to the Event Hub Service to authorize access to the resource. This is accomplished by setting the appropriate values in the Kafka client configuration. 
+To grant access to an Event Hub resource, the security principal must be authenticated and an OAuth 2.0 token is returned. The token is then passed as part of the request to the Event Hub Service to authorize access to the resource. This is accomplished by setting the appropriate values in the Kafka client configuration. 
 
 For more information on the Azure AD OAuth 2.0 for Event Hubs see [Authorize access with Azure Active Directory](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-azure-active-directory#overview)
 
@@ -96,7 +96,7 @@ For more information on the Azure AD OAuth 2.0 for Event Hubs see [Authorize acc
 
 The `DefaultAzureCredential` Class can be used to get a credential, and Kafka clients must use the scope of `https://<namespace>.servicebus.windows.net` to retrieve the access token from the Event Hub namespace. See [DefaultAzureCredential](https://docs.microsoft.com/en-us/python/api/azure-identity/azure.identity.defaultazurecredential?view=azure-python) for more information on this class. 
 
-A service principal is used in this example to get an AAD credential by setting the following environment variables:    
+In this example, a service principal is used to get the AAD credential by setting the following environment variables:    
 
 ```
 AZURE_CLIENT_ID=<AppClientId>
@@ -122,7 +122,7 @@ To connect a Kafka client to Event Hub using OAuth 2.0, the following configurat
 
 The return value of `oauth_cb` is expected to be a (token_str, expiry_time) tuple where expiry_time is the time in seconds since the epoch as a floating point number.
 
-An example `oauth_cb` is defined by `_get_token` below:
+An example `oauth_cb` is defined by the `_get_token` function below:
 
 ```python
 
@@ -130,7 +130,7 @@ AUTH_SCOPE="https://<namespace>.servicebus.windows.net/.default"
 cred = DefaultAzureCredential()
 
 def _get_token(config):
-    """config comes from sasl.oauthbearer.config below.
+    """confluent_kafka passes 'sasl.oauthbearer.config' as the config param
     """
     access_token = cred.get_token(AUTH_SCOPE)
     return access_token.token, access_token.expires_on
