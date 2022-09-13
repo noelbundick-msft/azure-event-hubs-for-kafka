@@ -121,17 +121,22 @@ To connect a Kafka client to Event Hub using OAuth 2.0, the following configurat
 ```
 
 The return value of `oauth_cb` is expected to be a (token_str, expiry_time) tuple where expiry_time is the time in seconds since the epoch as a floating point number.
+See [Confluent Kafka for Python](https://docs.confluent.io/platform/current/clients/confluent-kafka-python/html/index.html) for reference.
 
-An example `oauth_cb` is defined by the `_get_token` function below:
+An example `oauth_cb` and kafka client configuration is defined below:
 
 ```python
-
-AUTH_SCOPE="https://<namespace>.servicebus.windows.net/.default"
-cred = DefaultAzureCredential()
-
-def _get_token(config):
-    """confluent_kafka passes 'sasl.oauthbearer.config' as the config param
-    """
-    access_token = cred.get_token(AUTH_SCOPE)
+def oauth_cb(cred, namespace_fqdn, config):
+    # note: confluent_kafka passes 'sasl.oauthbearer.config' as the config param
+    access_token = cred.get_token('https://%s/.default' % namespace_fqdn)
     return access_token.token, access_token.expires_on
+
+az_credential = DefaultAzureCredential()
+eh_namespace_fqdn = '<namespace>.servicebus.windows.net'
+kafka_conf = {
+    'bootstrap.servers': '%s:9093' % namespace,
+    'security.protocol': 'SASL_SSL',
+    'sasl.mechanism': 'OAUTHBEARER',
+    'oauth_cb': partial(oauth_cb, az_credential, eh_namespace_fqdn),
+}
 ```
