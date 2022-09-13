@@ -37,7 +37,7 @@ Now run the set up script:
 source setup.sh
 ```
 
-(If using MacOS, you can use Homebrew to set up your machine by running `brew install openssl python librdkafka` - `pip` can then be used to install the Python SDK with `pip install confluent-kafka`.)
+(If using MacOS, you can use Homebrew to set up your machine by running `brew install openssl python librdkafka` - `pip` can then be used to install the Python SDK with `pip install confluent-kafka azure-identity python-dotenv`.)
 
 ## Running the samples
 
