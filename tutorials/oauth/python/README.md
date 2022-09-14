@@ -98,11 +98,10 @@ The `DefaultAzureCredential` Class can be used to get a credential, and Kafka cl
 
 In this example, a service principal is used to get the AAD credential by setting the following environment variables:    
 
-```
-AZURE_CLIENT_ID=<AppClientId>
-AZURE_CLIENT_SECRET=<AppSecret>
-AZURE_TENANT_ID=<TenantID>
-```
+```shell
+export AZURE_TENANT_ID=<TenantID>
+export AZURE_CLIENT_ID=<AppClientId>
+export AZURE_CLIENT_SECRET=<AppSecret>
 
 An RBAC role must be assigned to the application to gain access to Event Hubs. Azure provides built-in roles for authorizing access to Event Hubs. See [Azure Built in Roles for Azure Event Hubs](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-azure-active-directory#azure-built-in-roles-for-azure-event-hubs).
 
