@@ -102,6 +102,7 @@ In this example, a service principal is used to get the AAD credential by settin
 export AZURE_TENANT_ID=<TenantID>
 export AZURE_CLIENT_ID=<AppClientId>
 export AZURE_CLIENT_SECRET=<AppSecret>
+```
 
 An RBAC role must be assigned to the application to gain access to Event Hubs. Azure provides built-in roles for authorizing access to Event Hubs. See [Azure Built in Roles for Azure Event Hubs](https://docs.microsoft.com/en-us/azure/event-hubs/authorize-access-azure-active-directory#azure-built-in-roles-for-azure-event-hubs).
 
@@ -112,11 +113,11 @@ To create a service principal and assign RBAC roles to the application, review [
 
 To connect a Kafka client to Event Hub using OAuth 2.0, the following configuration is required:
 
-```
-    bootstrap.servers=<namespace>.servicebus.windows.net:9093
-    security.protocol=SASL_SSL
-    sasl.mechanism=OAUTHBEARER
-    oauth_cb=<Callback for retrieving OAuth Bearer token> 
+```properties
+bootstrap.servers=<namespace>.servicebus.windows.net:9093
+security.protocol=SASL_SSL
+sasl.mechanism=OAUTHBEARER
+oauth_cb=<Callback for retrieving OAuth Bearer token> 
 ```
 
 The return value of `oauth_cb` is expected to be a (token_str, expiry_time) tuple where expiry_time is the time in seconds since the epoch as a floating point number.
