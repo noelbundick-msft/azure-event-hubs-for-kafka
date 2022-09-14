@@ -125,6 +125,9 @@ See [Confluent Kafka for Python](https://docs.confluent.io/platform/current/clie
 An example `oauth_cb` and kafka client configuration is defined below:
 
 ```python
+from azure.identity import DefaultAzureCredential
+from functools import partial
+
 def oauth_cb(cred, namespace_fqdn, config):
     # note: confluent_kafka passes 'sasl.oauthbearer.config' as the config param
     access_token = cred.get_token('https://%s/.default' % namespace_fqdn)
@@ -138,4 +141,7 @@ kafka_conf = {
     'sasl.mechanism': 'OAUTHBEARER',
     'oauth_cb': partial(oauth_cb, az_credential, eh_namespace_fqdn),
 }
+
+# Create Producer instance
+p = Producer(kafka_conf)
 ```
