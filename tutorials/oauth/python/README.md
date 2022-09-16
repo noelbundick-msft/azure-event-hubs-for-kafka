@@ -123,7 +123,7 @@ python consumer.py mynamespace.servicebus.windows.net myconsumergroup topic1
 ```
 
 ## Troubleshooting
-### Errors observed without proper role assignments configured
+If you see any of the below errors, make sure that the role assignments are configured correctly:
 ```shell
 # producer
 % Message failed delivery: KafkaError{code=TOPIC_AUTHORIZATION_FAILED,val=29,str="Broker: Topic authorization failed"}
