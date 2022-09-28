@@ -123,11 +123,76 @@ python consumer.py mynamespace.servicebus.windows.net myconsumergroup topic1
 ```
 
 ## Troubleshooting
-If you see any of the below errors, make sure that the role assignments are configured correctly:
-```shell
-# producer
-% Message failed delivery: KafkaError{code=TOPIC_AUTHORIZATION_FAILED,val=29,str="Broker: Topic authorization failed"}
 
-# consumer
+Listed below are some common errors and possible remediations
+
+### Missing credentials
+
+```text
+DefaultAzureCredential failed to retrieve a token from the included credentials.
+Attempted credentials:
+        EnvironmentCredential: EnvironmentCredential authentication unavailable. Environment variables are not fully configured.
+Visit https://aka.ms/azsdk/python/identity/environmentcredential/troubleshoot to troubleshoot.this issue.
+        ManagedIdentityCredential: ManagedIdentityCredential authentication unavailable, no response from the IMDS endpoint.
+        SharedTokenCacheCredential: SharedTokenCacheCredential authentication unavailable. No accounts were found in the cache.
+        VisualStudioCodeCredential: Failed to get Azure user details from Visual Studio Code.
+        AzureCliCredential: Azure CLI not found on path
+        AzurePowerShellCredential: PowerShell is not installed
+To mitigate this issue, please refer to the troubleshooting guidelines here at https://aka.ms/azsdk/python/identity/defaultazurecredential/troubleshoot.
+```
+
+#### Cause
+
+You are missing credentials to connect to Azure AD and retrieve an access token.
+
+#### Remediation
+
+* If using the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli), run `az login`
+* If using a service principal, set the following environment variables:
+  * `AZURE_TENANT_ID`
+  * `AZURE_CLIENT_ID`
+  * `AZURE_CLIENT_SECRET`
+
+### Incorrect credentials
+
+```text
+DefaultAzureCredential failed to retrieve a token from the included credentials.
+Attempted credentials:
+        EnvironmentCredential: Authentication failed: AADSTS7000215: Invalid client secret provided. Ensure the secret being sent in the request is the client secret value, not the client secret ID, for a secret added to app '11dba002-88d3-45a5-b8c0-75a84ec2c1eb'.
+Trace ID: ba773467-5755-4492-9c05-d35d73683600
+Correlation ID: e976bf48-228a-4114-b06e-ce97aeb52af3
+Timestamp: 2022-09-28 16:43:50Z
+To mitigate this issue, please refer to the troubleshooting guidelines here at https://aka.ms/azsdk/python/identity/defaultazurecredential/troubleshoot.
+```
+
+#### Cause
+
+Your service principal credentials are incorrect or expired
+
+#### Remediation
+
+Ensure that your `AZURE_CLIENT_ID` and `AZURE_CLIENT_SECRET` values are correct
+
+### Missing role assignments
+
+Producer:
+
+```text
+% Message failed delivery: KafkaError{code=TOPIC_AUTHORIZATION_FAILED,val=29,str="Broker: Topic authorization failed"}
+```
+
+Consumer:
+
+```text
 cimpl.KafkaException: KafkaError{code=TOPIC_AUTHORIZATION_FAILED,val=29,str="Failed to fetch committed offset for group "<consumer group>" topic <topic name>[0]: Broker: Topic authorization failed"}
 ```
+
+#### Cause
+
+You are missing Azure RBAC role assignments for your application's identity (Azure CLI, Service Principal, etc)
+
+#### Remediation
+
+* Ensure that your application's identity is assigned the correct roles
+  * Producers need `Azure Event Hubs Data Sender`
+  * Consumers need `Azure Event Hubs Data Receiver`
